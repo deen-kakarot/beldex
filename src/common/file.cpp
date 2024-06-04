@@ -33,6 +33,7 @@
 #include "epee/misc_log_ex.h"
 #include <unistd.h>
 #include <cstdio>
+#include <fcntl.h>
 
 #ifdef WIN32
 #include "epee/string_tools.h"
@@ -51,7 +52,6 @@
 #ifdef __GLIBC__
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
 #include <unistd.h>
 #include <dirent.h>
 #include <cstring>

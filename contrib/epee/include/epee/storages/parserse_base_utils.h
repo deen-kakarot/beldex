@@ -27,6 +27,7 @@
 #pragma once 
 
 #include <string>
+#include <cstdint>
 #include <string_view>
 
 namespace epee::misc_utils::parse

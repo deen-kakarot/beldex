@@ -28,6 +28,4 @@
 [submodule "external/fmt"]
 	path = external/fmt
 	url = https://github.com/fmtlib/fmt.git
-[submodule "external/oxen-encoding"]
-	path = external/oxen-encoding
-	url = https://github.com/oxen-io/oxen-encoding.git
+

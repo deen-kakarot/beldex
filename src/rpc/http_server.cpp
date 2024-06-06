@@ -217,7 +217,7 @@ namespace cryptonote::rpc {
     // this, of course, if the request got aborted and replied to.
 
     // Constructor
-    call_data(http_server& http_server, core_rpc_server& core, HttpResponse& response, std::string url, const rpc_command* rpc_call)
+    call_data(http_server& http_server, core_rpc_server& core, HttpResponse& response, std::string url, const rpc_command* rpc_call = nullptr)
         : http(http_server), core_rpc(core), res(response), uri(std::move(url)), call(rpc_call) {}
 
     ~call_data() {

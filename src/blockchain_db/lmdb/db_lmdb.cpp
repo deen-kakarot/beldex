@@ -1411,8 +1411,10 @@ void BlockchainLMDB::open(const fs::path& filename, cryptonote::network_type net
   }
   else
   {
-    if (std::error_code ec; !fs::create_directories(filename, ec))
-      throw0(DB_OPEN_FAILURE(std::string("Failed to create directory ") + filename.u8string()));
+    if (std::error_code ec; !fs::create_directories(filename, ec)){
+      std::u8string u8_filename = filename.u8string();
+      throw0(DB_OPEN_FAILURE("Failed to create directory " + std::string(u8_filename.begin(), u8_filename.end())));
+    }
   }
 
   // check for existing LMDB files in base directory

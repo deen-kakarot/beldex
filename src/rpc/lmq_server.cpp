@@ -133,10 +133,11 @@ omq_rpc::omq_rpc(cryptonote::core& core, core_rpc_server& rpc, const boost::prog
     // enough to support unix domain sockets, but for now the Windows default is just "don't listen"
 #ifndef _WIN32
     // Push default .beldex/beldexd.sock
-    locals.push_back("ipc://" + core.get_config_directory().u8string() + "/" + CRYPTONOTE_NAME + "d.sock");
+    std::u8string u8_core = core.get_config_directory().u8string();
+    locals.push_back("ipc://" + std::string(u8_core.begin(), u8_core.end()) + "/" + CRYPTONOTE_NAME + "d.sock");
     // Pushing old default beldexd.sock onto the list. A symlink from .beldex -> .beldex so the user should be able
     // to communicate via the old .beldex/beldexd.sock
-    locals.push_back("ipc://" + core.get_config_directory().u8string() + "/beldexd.sock");
+    locals.push_back("ipc://" + std::string(u8_core.begin(), u8_core.end()) + "/beldexd.sock");
 #endif
   } else if (locals.size() == 1 && locals[0] == "none") {
     locals.clear();

@@ -215,6 +215,11 @@ namespace cryptonote::rpc {
     // If we have to drop the request because we are overloaded we want to reply with an error (so
     // that we close the connection instead of leaking it and leaving it hanging).  We don't do
     // this, of course, if the request got aborted and replied to.
+
+    // Constructor
+    call_data(http_server& http_server, core_rpc_server& core, HttpResponse& response, std::string url, const rpc_command* rpc_call)
+        : http(http_server), core_rpc(core), res(response), uri(std::move(url)), call(rpc_call) {}
+
     ~call_data() {
       if (replied || aborted) return;
       http.loop_defer([&http=http, &res=res, jsonrpc=jsonrpc] {

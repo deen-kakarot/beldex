@@ -186,7 +186,10 @@ void mlog_configure(const std::string &filename_base, bool console, const std::s
       const auto parent_path = filename_base_path.has_parent_path() ? filename_base_path.parent_path() : fs::path(".");
       for (const auto& p : fs::directory_iterator{parent_path})
       {
-        const std::string filename = p.path().u8string();
+
+        std::u8string u8_filename = p.path().u8string();
+        const std::string filename(u8_filename.begin(), u8_filename.end());
+
         if (filename.size() >= filename_base.size() && std::memcmp(filename.data(), filename_base.data(), filename_base.size()) == 0)
           found_files.push_back(p.path());
       }

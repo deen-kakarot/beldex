@@ -178,7 +178,7 @@ struct json_archiver : public serializer
     inner_array_contents_ = s > 0;
     ++depth_;
     stream_ << '[';
-    return {*this};
+    return nested_array{*this};
   }
 
   void delimit_array() { stream_ << (indent_ ? ", "sv : ","sv); }

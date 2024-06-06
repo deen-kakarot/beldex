@@ -666,7 +666,7 @@ PRAGMA_WARNING_DISABLE_VS(4355)
         ms += cur;
     }
     m_timer.expires_from_now(ms);
-    m_timer.async_wait([this](const boost::system::error_code& ec)
+    m_timer.async_wait([this, self](const boost::system::error_code& ec)
     {
       if(ec == boost::asio::error::operation_aborted)
         return;
@@ -1508,7 +1508,7 @@ POP_WARNINGS
     std::shared_ptr<boost::asio::steady_timer> sh_deadline(new boost::asio::steady_timer(io_service_));
     //start deadline
     sh_deadline->expires_from_now(std::chrono::milliseconds(conn_timeout));
-    sh_deadline->async_wait([=](const boost::system::error_code& error)
+    sh_deadline->async_wait([this, new_connection_l](const boost::system::error_code& error)
       {
           if(error != boost::asio::error::operation_aborted) 
           {
@@ -1517,7 +1517,7 @@ POP_WARNINGS
           }
       });
     //start async connect
-    sock_.async_connect(remote_endpoint, [this](const boost::system::error_code& ec_)
+    sock_.async_connect(remote_endpoint, [this, new_connection_l, sh_deadline, &cb, &adr, &port, ](const boost::system::error_code& ec_)
       {
         t_connection_context conn_context{};
         boost::system::error_code ignored_ec;

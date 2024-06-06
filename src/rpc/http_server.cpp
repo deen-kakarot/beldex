@@ -527,7 +527,7 @@ namespace cryptonote::rpc {
 
   void http_server::handle_json_rpc_request(HttpResponse& res, HttpRequest& req)
   {
-    std::shared_ptr<call_data> data{new call_data{*this, m_server, res, std::string{req.getUrl()}}};
+    std::shared_ptr<call_data> data{new call_data{*this, m_server, res, std::string{req.getUrl()}}, nullptr};
     data->jsonrpc = true;
     auto& request = data->request;
     request.context.admin = !m_restricted;

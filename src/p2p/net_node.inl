@@ -2018,7 +2018,7 @@ namespace nodetool
       network_zone& zone = m_network_zones.at(address.get_zone());
       LOG_PRINT_CC_L0(ping_context,"try_ping connected send ping" );
       bool inv_call_res = epee::net_utils::async_invoke_remote_command2<COMMAND_PING::response>(ping_context.m_connection_id, COMMAND_PING::ID, req, zone.m_net_server.get_config_object(),
-        [this](int code, const COMMAND_PING::response& rsp, p2p_connection_context& context)
+        [this,  &cb, &ping_context, address, pr, pr_](int code, const COMMAND_PING::response& rsp, p2p_connection_context& context)
       {
         if(code <= 0)
         {

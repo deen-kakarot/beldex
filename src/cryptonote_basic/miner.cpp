@@ -343,7 +343,7 @@ namespace cryptonote
     
     for(size_t i = 0; i != m_threads_total; i++)
     {
-      m_threads.emplace_back([=] { return worker_thread(slow_mining); });
+      m_threads.emplace_back([this] { return worker_thread(slow_mining); });
     }
 
     if (threads_count == 0)

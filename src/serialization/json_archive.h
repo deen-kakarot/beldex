@@ -78,6 +78,9 @@ struct json_archiver : public serializer
 
   struct nested_object {
     json_archiver& ar;
+
+    explicit nested_object(json_archiver& archiver) : ar(archiver) {}
+    
     ~nested_object() {
       --ar.depth_;
       ar.make_indent();
@@ -134,6 +137,8 @@ struct json_archiver : public serializer
     json_archiver& ar;
     int exc_count = std::uncaught_exceptions();
     bool first = true;
+
+    explicit nested_array(json_archiver& archiver) : ar(archiver) {}
 
     // Call before writing an element to add a delimiter.  The first element() call adds no
     // delimiter.  Returns the archive itself, allowing you to write:

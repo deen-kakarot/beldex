@@ -1422,7 +1422,8 @@ void BlockchainLMDB::open(const fs::path& filename, cryptonote::network_type net
   if (fs::exists(old_files / CRYPTONOTE_BLOCKCHAINDATA_FILENAME)
       || fs::exists(old_files / CRYPTONOTE_BLOCKCHAINDATA_LOCK_FILENAME))
   {
-    LOG_PRINT_L0("Found existing LMDB files in " << old_files.u8string());
+    std::u8string u8_old_files = old_files.u8string();
+    LOG_PRINT_L0("Found existing LMDB files in " << std::string(u8_old_files.begin(), u8_old_files.end()));
     LOG_PRINT_L0("Move " << CRYPTONOTE_BLOCKCHAINDATA_FILENAME << " and/or " << CRYPTONOTE_BLOCKCHAINDATA_LOCK_FILENAME << " to " << filename << ", or delete them, and then restart");
     throw DB_ERROR("Database could not be opened");
   }

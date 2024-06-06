@@ -52,14 +52,6 @@ namespace fs = ghc::filesystem;
 // namespace fs = ghc::filesystem;
 // #endif
 
-// #ifndef USE_GHC_FILESYSTEM
-// #include <filesystem>
-// namespace fs { using namespace std::filesystem; }
-// #else
-// #include <ghc/filesystem.hpp>
-// namespace fs = ghc::filesystem;
-// #endif
-
 #undef BELDEX_DEFAULT_LOG_CATEGORY
 #define BELDEX_DEFAULT_LOG_CATEGORY "logging"
 
@@ -99,7 +91,8 @@ std::string mlog_get_default_log_path(const char *default_filename)
   else
     default_log_file = default_filename;
 
-  return (fs::u8path(default_log_folder) / fs::u8       path(default_log_file)).u8string();
+  std::u8string u8_log_file_path = (fs::u8path(default_log_folder) / fs::u8path(default_log_file)).u8string();
+  return std::string(u8_log_file_path.begin(), u8_log_file_path.end());
 }
 
 static void mlog_set_common_prefix()

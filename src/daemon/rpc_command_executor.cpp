@@ -186,7 +186,7 @@ namespace {
     if (dt < 90s)
       s = std::to_string(dt.count()) + (abbreviate ? "sec" : dt == 1s ? " second" : " seconds");
     else if (dt < 90min){
-      std::string format_string;
+      auto format_string;
       if (abbreviate)
         format_string = "{:.1f}min";
       else
@@ -194,7 +194,7 @@ namespace {
       s = fmt::format(format_string, static_cast<float>(dt.count()) / 60.0f);
     }
     else if (dt < 36h){
-      std::string format_string;
+      fmt::string_view format_string;
       if (abbreviate)
         format_string = "{:.1f}hr";
       else

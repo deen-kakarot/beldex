@@ -594,7 +594,8 @@ sqlite3 *init_beldex_name_system(const fs::path& file_path, bool read_only)
   }
 
   int const flags = read_only ? SQLITE_OPEN_READONLY : SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE;
-  int sql_open    = sqlite3_open_v2(file_path.u8string().c_str(), &result, flags, nullptr);
+  std::u8string u8_file_path = file_path.u8string();
+  int sql_open    = sqlite3_open_v2(std::string(u8_file_path.begin(), u8_file_path.end()).c_str(), &result, flags, nullptr);
   if (sql_open != SQLITE_OK)
   {
     MERROR("Failed to open BNS db at: " << file_path << ", reason: " << sqlite3_errstr(sql_open));

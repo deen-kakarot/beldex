@@ -117,16 +117,21 @@ namespace cryptonote
   , "Allow a local IPs for local and received master node public IP (for local testing only)"
   , false
   };
+  std::u8string u8_get_default_data_dir = tools::get_default_data_dir().u8string();
   const command_line::arg_descriptor<std::string, false, true, 2> arg_data_dir = {
     "data-dir"
   , "Specify data directory"
-  , tools::get_default_data_dir().u8string()
+  , std::string(u8_get_default_data_dir.begin(), u8_get_default_data_dir.end())
   , {{ &arg_testnet_on, &arg_devnet_on }}
   , [](std::array<bool, 2> testnet_devnet, bool defaulted, std::string val)->std::string {
-      if (testnet_devnet[0])
-        return (fs::u8path(val) / "testnet").u8string();
-      else if (testnet_devnet[1])
-        return (fs::u8path(val) / "devnet").u8string();
+      if (testnet_devnet[0]){
+        std::u8string u8_testnet = (fs::u8path(val) / "testnet").u8string();
+        return std::string(u8_testnet.begin(), u8_testnet.end());
+      }
+      else if (testnet_devnet[1]){
+        std::u8string u8_devnet = (fs::u8path(val) / "devnet").u8string();
+        return std::string(u8_devnet.begin(), u8_devnet.end());
+      }
       return val;
     }
   };
@@ -626,7 +631,8 @@ namespace cryptonote
     // make sure the data directory exists, and try to lock it
     if (std::error_code ec; !fs::is_directory(folder, ec) && !fs::create_directories(folder, ec) && ec)
     {
-      MERROR("Failed to create directory " + folder.u8string() + (ec ? ": " + ec.message() : ""s));
+      std::u8string u8_folder = folder.u8string();
+      MERROR("Failed to create directory " + std::string(u8_folder.begin(), u8_folder.end()) + (ec ? ": " + ec.message() : ""s));
       return false;
     }
 
@@ -876,9 +882,10 @@ namespace cryptonote
       bool r = tools::slurp_file(keypath, keystr);
       memcpy(&unwrap(unwrap(privkey)), keystr.data(), sizeof(privkey));
       memwipe(&keystr[0], keystr.size());
-      CHECK_AND_ASSERT_MES(r, false, "failed to load master node key from " + keypath.u8string());
+      std::u8string u8_keypath = keypath.u8string();
+      CHECK_AND_ASSERT_MES(r, false, "failed to load master node key from " + std::string(u8_keypath.begin(), u8_keypath.end()));
       CHECK_AND_ASSERT_MES(keystr.size() == sizeof(privkey), false,
-          "master node key file " + keypath.u8string() + " has an invalid size");
+          "master node key file " + std::string(u8_keypath.begin(), u8_keypath.end()) + " has an invalid size");
 
       r = get_pubkey(privkey, pubkey);
       CHECK_AND_ASSERT_MES(r, false, "failed to generate pubkey from secret key");
@@ -893,7 +900,8 @@ namespace cryptonote
       }
 
       bool r = tools::dump_file(keypath, tools::view_guts(privkey));
-      CHECK_AND_ASSERT_MES(r, false, "failed to save master node key to " + keypath.u8string());
+      std::u8string u8_keypath = keypath.u8string();
+      CHECK_AND_ASSERT_MES(r, false, "failed to save master node key to " + std::string(u8_keypath.begin(), u8_keypath.end()));
 
       fs::permissions(keypath, fs::perms::owner_read, ec);
     }

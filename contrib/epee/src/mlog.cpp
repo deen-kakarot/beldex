@@ -41,16 +41,14 @@
 #include "epee/string_tools.h"
 #include "epee/misc_os_dependent.h"
 #include "epee/misc_log_ex.h"
+
+#ifndef USE_GHC_FILESYSTEM
+#include <filesystem>
+namespace fs { using namespace std::filesystem; }
+#else
 #include <ghc/filesystem.hpp>
 namespace fs = ghc::filesystem;
-
-// #ifndef USE_GHC_FILESYSTEM
-// #include <filesystem>
-// namespace fs { using namespace std::filesystem; }
-// #else
-// #include <ghc/filesystem.hpp>
-// namespace fs = ghc::filesystem;
-// #endif
+#endif
 
 #undef BELDEX_DEFAULT_LOG_CATEGORY
 #define BELDEX_DEFAULT_LOG_CATEGORY "logging"

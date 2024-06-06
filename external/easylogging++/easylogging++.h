@@ -2924,7 +2924,7 @@ class MessageBuilder {
 
 #  define ELPP_SIMPLE_LOG(LOG_TYPE)\
 MessageBuilder& operator<<(LOG_TYPE msg) {\
-m_logger->stream() << std::string(msg.c_str());\
+m_logger->stream() << std::to_string(msg);\
 if (ELPP->hasFlag(LoggingFlag::AutoSpacing)) {\
 m_logger->stream() << " ";\
 }\

@@ -187,10 +187,18 @@ namespace {
     std::string s;
     if (dt < 90s)
       s = std::to_string(dt.count()) + (abbreviate ? "sec" : dt == 1s ? " second" : " seconds");
-    else if (dt < 90min)
-      s = fmt::format(abbreviate ? "{:.1f}min" : "{:.1f} minutes", static_cast<float>(dt.count()) / 60.0f);
-    else if (dt < 36h)
-      s = fmt::format(abbreviate ? "{:.1f}hr" : "{:.1f} hours", static_cast<float>(dt.count()) / 3600.0f);
+    else if (dt < 90min){
+      if (abbreviate)
+        s = fmt::format("{:.1f}min", static_cast<float>(dt.count()) / 60.0f);
+      else
+        s = fmt::format("{:.1f} minutes", static_cast<float>(dt.count()) / 60.0f);
+    }
+    else if (dt < 36h){
+      if (abbreviate)
+        s = fmt::format("{:.1f}hr", static_cast<float>(dt.count()) / 3600.0f);
+      else
+        s = fmt::format("{:.1f} hours", static_cast<float>(dt.count()) / 3600.0f);
+    }
     else
       s = fmt::format("{:.1f} days", static_cast<float>(dt.count()) / 86400);
     if (abbreviate) {
